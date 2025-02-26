@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #waiting {
+        font-size: 20px;
+        color: #333;
+      }
+      #btn {
+        font-size: 20px;
+        color: #333;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        background-color: #000;
+        color: #fff;
+        cursor: pointer;
+      }
+      #btn:hover {
+        background-color: #333;
+      }
+
+      @keyframes move {
+        0% {
+          left: 25%;
+          top: 25%;
+        }
+        25% {
+          left: 50%;
+          top: 25%;
+        }
+        50% {
+          left: 50%;
+          top: 50%;
+        }
+        75% {
+          left: 25%;
+          top: 50%;
+        }
+        100% {
+          left: 25%;
+          top: 25%;
+        }
+      }
+      .ball {
+        width: 10px;
+        height: 10px;
+        background-color: #000;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: move 1s infinite linear;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="btn">开始执行任务</button>
+    <label id="waiting">等待中...</label>
+    <div class="ball"></div>
+    <script src="runtask.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
