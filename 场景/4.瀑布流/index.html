@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      #container {
+        position: relative;
+      }
+
+      .box {
+        float: left;
+        padding: 5px;
+      }
+
+      .box-img {
+        width: 150px;
+        padding: 5px;
+        border: 1px solid #dd9f9f;
+        box-sizing: border-box;
+      }
+
+      img {
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="box">
+        <div class="box-img">
+          <img src="./img/1.webp" alt="" />
+        </div>
+        <div class="box-title">迷你二鹏</div>
+      </div>
+      <div class="box">
+        <div class="box-img">
+          <img src="./img/2.webp" alt="" />
+        </div>
+        <div class="box-title">迷你二鹏</div>
+      </div>
+      <div class="box">
+        <div class="box-img">
+          <img src="./img/3.webp" alt="" />
+        </div>
+        <div class="box-title">迷你二鹏</div>
+      </div>
+      <div class="box">
+        <div class="box-img">
+          <img src="./img/4.webp" alt="" />
+        </div>
+        <div class="box-title">迷你二鹏</div>
+      </div>
+      <div class="box">
+        <div class="box-img">
+          <img src="./img/5.jfif" alt="" />
+        </div>
+        <div class="box-title">迷你二鹏</div>
+      </div>
+      <div class="box">
+        <div class="box-img">
+          <img src="./img/6.webp" alt="" />
+        </div>
+        <div class="box-title">迷你二鹏</div>
+      </div>
+      <div class="box">
+        <div class="box-img">
+          <img src="./img/7.jfif" alt="" />
+        </div>
+        <div class="box-title">迷你二鹏</div>
+      </div>
+      <div class="box">
+        <div class="box-img">
+          <img src="./img/8.webp" alt="" />
+        </div>
+        <div class="box-title">迷你二鹏</div>
+      </div>
+      <div class="box">
+        <div class="box-img">
+          <img src="./img/9.webp" alt="" />
+        </div>
+        <div class="box-title">迷你二鹏</div>
+      </div>
+      <div class="box">
+        <div class="box-img">
+          <img src="./img/10.webp" alt="" />
+        </div>
+        <div class="box-title">迷你二鹏</div>
+      </div>
+    </div>
+    <script>
+      function getChildElement(parent, className) {
+        return Array.from(parent.getElementsByClassName(className));
+      }
+
+      function debounce(fn, delay = 200) {
+        let timer = null;
+        return function (...args) {
+          clearTimeout(timer);
+          timer = setTimeout(() => fn.apply(this, args), delay);
+        };
+      }
+
+      function imgLocation(parentId, childClass) {
+        const parent = document.getElementById(parentId);
+        const children = getChildElement(parent, childClass);
+        if (!children.length) return;
+
+        // 重置所有子元素的定位样式
+        children.forEach(child => {
+          child.style.position = '';
+          child.style.top = '';
+          child.style.left = '';
+        });
+
+        const childWidth = children[0].offsetWidth;
+        const cols = Math.floor(document.documentElement.clientWidth / childWidth);
+        
+        parent.style.cssText = `width:${childWidth * cols}px;margin:0 auto`;
+        
+        const heightArr = Array(cols).fill(0);
+        
+        children.forEach((child, index) => {
+          if (index < cols) {
+            heightArr[index] = child.offsetHeight;
+          } else {
+            const minHeight = Math.min(...heightArr);
+            const minIndex = heightArr.indexOf(minHeight);
+            
+            child.style.position = "absolute";
+            child.style.top = minHeight + "px";
+            child.style.left = children[minIndex].offsetLeft + "px";
+            
+            heightArr[minIndex] += child.offsetHeight;
+          }
+        });
+      }
+
+      window.onload = function () {
+        imgLocation("container", "box");
+        
+        window.addEventListener('resize', debounce(() => {
+          imgLocation("container", "box");
+        }));
+      };
+    </script>
+  </body>
+</html>
