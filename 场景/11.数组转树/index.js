@@ -85,3 +85,21 @@ const arr = [
 
 const tree = arrayToTree(arr);
 console.log(tree);
+
+
+
+function treeToArray(tree) {
+  const result = [];
+  const stack = [tree];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    result.push(node);
+    if (node.children) {
+      stack.push(...node.children);
+    }
+  }
+  return result;
+}
+
+const arr2 = treeToArray(tree);
+console.log(arr2);
