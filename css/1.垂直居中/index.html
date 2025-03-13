@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* 1. Flexbox 方案（最推荐） */
+      .parent {
+        display: flex;
+        justify-content: center; /* 水平居中 */
+        align-items: center; /* 垂直居中 */
+        height: 300px; /* 父容器需要有高度 */
+      }
+
+      /* 2. Grid 方案 */
+      .parent {
+        display: grid;
+        place-items: center; /* 简写方式，垂直和水平居中 */
+        height: 300px;
+      }
+
+      /* 或者分开写 */
+      .parent {
+        display: grid;
+        align-items: center; /* 垂直居中 */
+        justify-items: center; /* 水平居中 */
+        height: 300px;
+      }
+
+      /* 3. 绝对定位 + transform */
+
+      .parent {
+        position: relative;
+        height: 300px;
+      }
+
+      .child {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      /* 4. 绝对定位 + 负margin（已知宽高） */
+
+      .parent {
+        position: relative;
+        height: 300px;
+      }
+
+      .child {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100px;
+        height: 100px;
+        margin-top: -50px; /* 高度的一半 */
+        margin-left: -50px; /* 宽度的一半 */
+      }
+    </style>
+  </head>
+  <body></body>
+</html>
