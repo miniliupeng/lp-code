@@ -1,4 +1,0 @@
-Could not build query.  Err: Error: Parse error on line 1:
-undefined
----------^
-Expecting 'lt', 'lte', 'gt', 'gte', '==', '!=', got 'EOF'
