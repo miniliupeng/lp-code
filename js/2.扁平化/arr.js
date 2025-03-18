@@ -28,7 +28,7 @@ function flatten(arr) {
   while (stask.length) {
     const item = stask.pop();
     if (Array.isArray(item)) {
-      stask.push(item);
+      stask.push(...item);
     } else {
       result.unshift(item);
     }

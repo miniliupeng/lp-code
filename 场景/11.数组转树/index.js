@@ -52,7 +52,7 @@ function arrayToTree(arr) {
   for (const item of arr) {
     let node = null;
     if (map.has(item.id)) {
-      node = map.get(item.id);
+      node = { ...item, ...map.get(item.id) };
     } else {
       node = { ...item, children: [] };
       map.set(item.id, node);

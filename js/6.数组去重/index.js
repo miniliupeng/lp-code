@@ -1,28 +1,20 @@
-// 基础版本
-Array.prototype.myReduce = function(callback, initialValue) {
-  // 检查数组是否为空
-  if (this.length === 0 && initialValue === undefined) {
-    throw new TypeError('Reduce of empty array with no initial value');
-  }
-  
-  let accumulator = initialValue;
-  let startIndex = 0;
-  
-  // 如果没有提供初始值，使用数组第一个元素作为初始值
-  if (accumulator === undefined) {
-    accumulator = this[0];
-    startIndex = 1;
-  }
-  
-  // 遍历数组
-  for (let i = startIndex; i < this.length; i++) {
-    accumulator = callback(accumulator, this[i], i, this);
-  }
-  
-  return accumulator;
-};
+// function uniqueArray(arr){
+//   // 将数组转换为Set去除元素
+//   const uniqueSet = new Set(arr);
+//   // 再将Set转换会数组
+//   return Array.from(uniqueSet);
+// }
+// // 测试
+// const testArr1 = [1, 2, 2, 3, 4, 4];
+// console.log(uniqueArray(testArr1));
+
+function uniqueArray(arr) {
+  return arr.filter((item, index) => {
+    // 检查元素首次出现的位置是否和当前索引相同
+    return arr.indexOf(item) === index;
+  });
+}
 
 // 测试
-const arr = [1, 2, 3, 4, 5];
-const sum = arr.myReduce((acc, curr) => acc + curr, 0);
-console.log(sum); // 15
+const testArr4 = [1, 2, 2, 3, 4, 4];
+console.log(uniqueArray(testArr4));
