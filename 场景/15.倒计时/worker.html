@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 使用 Web Workers 版本const timerWorker = new Worker('timer-worker.js');
+      const timerWorker = new Worker('./timer-worker.js');
+
+      timerWorker.onmessage = function (e) {
+        const data = e.data;
+        console.log(`剩余: ${Math.ceil(data.remaining / 1000)}秒`);
+
+        if (data.done) {
+          console.log('倒计时结束');
+          timerWorker.terminate();
+        }
+      };
+
+      timerWorker.postMessage({
+        command: 'start',
+        interval: 1000,
+        duration: 10000 // 10秒
+      });
+    </script>
+  </body>
+</html>

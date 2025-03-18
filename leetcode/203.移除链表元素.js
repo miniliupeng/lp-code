@@ -17,6 +17,7 @@
  * @param {number} val
  * @return {ListNode}
  */
+
 var removeElements = function (head, val) {
   const dummy = new ListNode(0, head);
   let current = dummy;

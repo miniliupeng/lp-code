@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function example3(count) {
+        // 记录上一次执行的时间戳
+        let lastTime = performance.now();
+
+        function step(timestamp) {
+          // 如果是首次执行或者已经过了1秒
+          if (lastTime === 0 || timestamp - lastTime >= 1000) {
+            console.log(count);
+            count--;
+            lastTime = timestamp;
+
+            if (count < 0) {
+              console.log('倒计时结束');
+              return;
+            }
+          }
+
+          // 继续请求下一帧
+          requestAnimationFrame(step);
+        }
+
+        // 开始动画循环
+        requestAnimationFrame(step);
+      }
+
+      example3(10);
+    </script>
+  </body>
+</html>

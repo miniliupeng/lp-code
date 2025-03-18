@@ -9,16 +9,22 @@
  * @param {number} x
  * @return {number}
  */
-var mySqrt = function (x) {
-  if (x === 0) return 0
-  let result  = x
+const mySqrt = function (x) {
+  if (x === 0) return 0;
+  let left = 1;
+  let right = x;
 
-  while (result > x / result) {
-    result = Math.floor((result + x / result) / 2)
+  while (left <= right) {
+    const mid = left + Math.floor((right - left) / 2)
+
+    if (mid * mid === x) {
+      return mid
+    } else if (mid * mid < x) {
+      left = mid + 1;
+    } else {
+      right = mid - 1
+    }
   }
-
-
-
-  return result
+  return right
 };
 // @lc code=end

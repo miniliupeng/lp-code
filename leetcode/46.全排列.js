@@ -32,5 +32,3 @@ var permute = function (nums) {
   return list;
 };
 // @lc code=end
-
-permute([1, 2, 3]);

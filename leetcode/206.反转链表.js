@@ -18,15 +18,15 @@
  */
 var reverseList = function (head) {
   let prev = null; // 前一个节点，初始为 null
-  let current = head; // 当前处理的节点
+  let current = head; // 当前节点，初始为头节点
 
   while (current) {
-    const next = current.next; // 暂存下一个节点
-    current.next = prev; // 反转指针
-    prev = current; // 前移 prev 指针
-    current = next; // 前移 current 指针
+    const next = current.next; // 1. 暂存下一个节点
+    current.next = prev; // 2. 反转指针
+    prev = current; // 3. 向前移动 prev 指针
+    current = next; // 4. 向后移动 current 指针
   }
 
-  return prev; // 新的头节点
+  return prev; // prev 最终指向新的头节点
 };
 // @lc code=end
