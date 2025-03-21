@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>进度条示例</title>
+  </head>
+  <body>
+    <!-- 创建容器 -->
+    <div id="progressContainer"></div>
+
+    <script>
+      function createProgressBar(containerId) {
+        // 创建进度条元素
+        const container = document.getElementById(containerId);
+        const progressBarContainer = document.createElement('div');
+        const progressBar = document.createElement('div');
+        const progressText = document.createElement('span');
+
+        // 设置外层容器样式
+        progressBarContainer.style.cssText = `
+    width: 100%;
+    background: #f0f0f0;
+    border-radius: 4px;
+  `;
+
+        // 设置进度条样式
+        progressBar.style.cssText = `
+    width: 0%;
+    height: 20px;
+    background: #4CAF50;
+    border-radius: 4px;
+    transition: width 0.3s ease-in-out;
+  `;
+
+        // 设置文字样式
+        progressText.style.cssText = `
+    color: white;
+    padding: 0 8px;
+    display: inline-block;
+  `;
+
+        // 组装DOM
+        progressBar.appendChild(progressText);
+        progressBarContainer.appendChild(progressBar);
+        container.appendChild(progressBarContainer);
+
+        let progress = 0;
+        const maxProgress = 95; // 最大进度95%
+        const duration = 120; // 总时长120秒
+        const increment = maxProgress / duration; // 每秒增加的进度
+
+        // 更新进度条
+        const updateProgress = () => {
+          if (progress >= maxProgress) {
+            clearInterval(timer);
+            return;
+          }
+
+          progress = Math.min(maxProgress, progress + increment);
+          progressBar.style.width = `${progress}%`;
+          progressText.textContent = `${Math.round(progress)}%`;
+        };
+
+        // 每秒更新一次
+        const timer = setInterval(updateProgress, 1000);
+
+        // 返回控制函数
+        return {
+          // 重置进度条
+          reset: () => {
+            progress = 0;
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+          },
+          // 获取当前进度
+          getProgress: () => progress,
+          // 停止进度条
+          stop: () => clearInterval(timer),
+          // 完成进度条
+          complete: () => {
+            progress = maxProgress;
+            progressBar.style.width = '100%';
+            progressText.textContent = '100%';
+          }
+        };
+      }
+
+      // 初始化进度条
+      const progressBar = createProgressBar('progressContainer');
+
+      // 使用控制函数示例
+      document.addEventListener('DOMContentLoaded', () => {
+        // 添加重置按钮
+        const resetButton = document.createElement('button');
+        resetButton.textContent = '重置';
+        resetButton.onclick = () => progressBar.reset();
+        document.body.appendChild(resetButton);
+
+        // 添加停止按钮
+        const stopButton = document.createElement('button');
+        stopButton.textContent = '停止';
+        stopButton.onclick = () => progressBar.stop();
+        document.body.appendChild(stopButton);
+
+        // 添加完成按钮
+        const completeButton = document.createElement('button');
+        completeButton.textContent = '完成';
+        completeButton.onclick = () => progressBar.complete();
+        document.body.appendChild(completeButton);
+      });
+    </script>
+  </body>
+</html>
