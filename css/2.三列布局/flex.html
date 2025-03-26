@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      .left,
+      .right {
+        height: 200px;
+        width: 200px;
+        background-color: rgb(204, 156, 156);
+      }
+      .content {
+        height: 200px;
+        background-color: rgb(251, 255, 192);
+      }
+      .page {
+        height: 200px;
+        display: flex;
+      }
+      .content {
+        flex: 1;
+        order: 1;
+      }
+
+      .left {
+        order: 0;
+      }
+
+      .right {
+        order: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="content">center</div>
+      <div class="left">left</div>
+      <div class="right">right</div>
+    </div>
+  </body>
+</html>
