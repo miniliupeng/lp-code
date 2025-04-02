@@ -1,4 +1,4 @@
-var rAF = function (loop) {
+var rAF = function () {
   return (
     window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
@@ -8,18 +8,15 @@ var rAF = function (loop) {
     function (callback) {
       window.setTimeout(callback, 1000 / 60);
     }
-  )(loop);
-};
+  );
+}();
 
 var fps = 0;
 var frame = 0;
 var lastTime = Date.now();
-var lastFrameTime = Date.now();
 
 var loop = function () {
   var now = Date.now();
-
-  lastFrameTime = now;
   frame++;
 
   if (now - lastTime > 1000) {
