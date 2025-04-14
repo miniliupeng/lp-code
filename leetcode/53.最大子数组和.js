@@ -10,10 +10,6 @@
  * @return {number}
  */
 var maxSubArray = function (nums) {
-  // 处理边界情况
-  if (nums.length === 0) return 0;
-  if (nums.length === 1) return nums[0];
-
   // 初始化：第一个元素的值作为当前最大和和全局最大和
   let currentSum = nums[0];
   let maxSum = nums[0];
@@ -29,6 +25,4 @@ var maxSubArray = function (nums) {
 
   return maxSum;
 };
-
-console.log(maxSubArray([-2, 1]));
 // @lc code=end
