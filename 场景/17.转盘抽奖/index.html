@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>转盘抽奖</title>
+    <style>
+        .lottery-container {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            margin: 50px auto;
+        }
+        
+        .lottery-plate {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid #e4393c;
+            position: relative;
+            transition: transform 4s ease-out;
+        }
+        
+        .prize-item {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: 100% 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .start-btn {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #e4393c;
+            color: #fff;
+            border: none;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="lottery-container">
+        <div class="lottery-plate" id="plate"></div>
+        <button class="start-btn" onclick="startLottery(1)">开始</button>
+    </div>
+
+    <script>
+        // 奖项配置
+        const prizes = [
+            { name: '一等奖', bg: '#FFF4D6' },
+            { name: '二等奖', bg: '#FFFFFF' },
+            { name: '三等奖', bg: '#FFF4D6' },
+            { name: '四等奖', bg: '#FFFFFF' },
+            { name: '五等奖', bg: '#FFF4D6' },
+            { name: '谢谢参与', bg: '#FFFFFF' }
+        ];
+        
+        let isRotating = false;
+        const plate = document.getElementById('plate');
+
+        // 初始化转盘
+        function initPlate() {
+            const itemAngle = 360 / prizes.length;
+            prizes.forEach((prize, index) => {
+                const item = document.createElement('div');
+                item.className = 'prize-item';
+                item.innerHTML = prize.name;
+                item.style.backgroundColor = prize.bg;
+                item.style.transform = `rotate(${itemAngle * index}deg)`;
+                plate.appendChild(item);
+            });
+        }
+
+        // 开始抽奖
+        function startLottery(targetIndex = null) {
+          console.log(isRotating);
+          
+            if (isRotating) return;
+            // plate.style.transform = `rotate(0deg)`;
+            // plate.clientWidth;
+            isRotating = true;
+
+            // 如果没有指定中奖位置，则随机生成
+            if (targetIndex === null) {
+                targetIndex = Math.floor(Math.random() * prizes.length);
+            }
+
+            // 计算旋转角度
+            const itemAngle = 360 / prizes.length;
+            const targetAngle = 360 * 5 + (360 - itemAngle * targetIndex);
+            
+            plate.style.transform = `rotate(${targetAngle}deg)`;
+
+            // 动画结束后重置状态
+            setTimeout(() => {
+                isRotating = false;
+                alert(`恭喜获得：${prizes[targetIndex].name}`);
+            }, 4000);
+        }
+
+        // 初始化转盘
+        initPlate();
+    </script>
+</body>
+</html>

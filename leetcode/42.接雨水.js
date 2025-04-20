@@ -21,7 +21,7 @@ var trap = function (height) {
     leftMax = Math.max(leftMax, height[left]);
     rightMax = Math.max(rightMax, height[right]);
 
-    // 从小的一遍收集雨水
+    // 从小的一边收集雨水
     if (leftMax < rightMax) {
       result += leftMax - height[left];
       left++;
@@ -33,3 +33,5 @@ var trap = function (height) {
   return result;
 };
 // @lc code=end
+
+// 时间复杂度为O(n)，空间复杂度为O(1)
