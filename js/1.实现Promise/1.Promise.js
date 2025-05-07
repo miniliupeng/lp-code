@@ -222,7 +222,7 @@ class MyPromise {
             errors[index] = reason;
             count++;
             if (count === promises.length) {
-              reject(new AggregateError('All promises were rejected', errors));
+              reject(new AggregateError(errors, 'All promises were rejected'));
             }
           });
       });
@@ -249,6 +249,28 @@ class MyPromise {
       };
 
       attempt();
+
+      // while版本
+      // const run = async () => {
+      //   while (attempts < times) {
+      //     try {
+      //       const result = await MyPromise.resolve(fn());
+      //       resolve(result);
+      //       return;
+      //     } catch (error) {
+      //       attempts++;
+      //       if (attempts === times) {
+      //         reject(error);
+      //         return;
+      //       }
+      //       if (delay > 0) {
+      //         await new Promise(resolve => setTimeout(resolve, delay));
+      //       }
+      //     }
+      //   }
+      // };
+
+      // run();
     });
   }
 }
@@ -316,3 +338,38 @@ promise.then(
 //   .then((value) => {
 //     console.log(value); // 输出：成功！
 //   });
+
+
+
+
+// 测试 retry
+function testRetry() {
+  let counter = 0;
+  
+  function flakeyFunction() {
+    return new MyPromise((resolve, reject) => {
+      counter++;
+      console.log(`尝试第 ${counter} 次`);
+      
+      // 前两次调用会失败，第三次成功
+      if (counter < 3) {
+        reject(new Error(`失败了，这是第 ${counter} 次尝试`));
+      } else {
+        resolve(`成功了！这是第 ${counter} 次尝试`);
+      }
+    });
+  }
+  
+  console.log('开始测试 retry 方法...');
+  
+  // 尝试最多3次，每次失败后延迟1000ms
+  MyPromise.retry(flakeyFunction, 3, 1000)
+    .then(result => {
+      console.log('最终结果:', result);
+    })
+    .catch(error => {
+      console.error('所有重试都失败了:', error.message);
+    });
+}
+
+testRetry();
