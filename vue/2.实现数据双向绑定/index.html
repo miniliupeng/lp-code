@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+</head>
+<body>
+  <div id="app">
+    <input type="text" v-model="name1" placeholder="请输入" />
+    <input type="text" v-model="name2" placeholder="请输入" />
+    <span>{{name1}}</span>
+    <span>{{name2}}</span>
+  </div>
+  <script src="./index.js"></script>
+  <script type="text/javascript">
+      var vm = new VAE({
+          el: '#app',
+          data: {
+              name1: "周杰伦",
+              name2: "许嵩",
+          },
+      })
+  </script>
+</body>
+</html>
