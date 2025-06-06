@@ -70,3 +70,30 @@ var mergeKLists = function (lists) {
 
 // 这种方法比直接顺序合并更有效率，因为每次合并的链表长度都比较均匀，避免了链表长度差异过大的情况。
 
+
+
+
+// var mergeKLists = function(lists) {
+//   // 收集所有节点值
+//   const values = [];
+//   for (let list of lists) {
+//       let current = list;
+//       while (current) {
+//           values.push(current.val);
+//           current = current.next;
+//       }
+//   }
+  
+//   // 排序
+//   values.sort((a, b) => a - b);
+  
+//   // 重建链表
+//   const dummy = new ListNode(0);
+//   let current = dummy;
+//   for (let val of values) {
+//       current.next = new ListNode(val);
+//       current = current.next;
+//   }
+  
+//   return dummy.next;
+// };
