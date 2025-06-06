@@ -1,6 +1,6 @@
 function quickSortInSpace(arr, left = 0, right = arr.length - 1) {
   if (left >= right) return;
-  const pivotIndex = partion(arr, left, right);
+  const pivotIndex = partition(arr, left, right);
   quickSortInSpace(arr, left, pivotIndex - 1);
   quickSortInSpace(arr, pivotIndex + 1, right);
 
