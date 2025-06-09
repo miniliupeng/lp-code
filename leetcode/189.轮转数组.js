@@ -17,6 +17,7 @@ var rotate = function (nums, k) {
   // 如果k为0，不需要轮转
   if (k === 0) return;
 
+  // 三次反转法
   // 反转整个数组
   reverse(nums, 0, nums.length - 1);
   // 反转前k个元素
