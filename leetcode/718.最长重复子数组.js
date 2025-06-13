@@ -19,8 +19,8 @@ var findLength = function (nums1, nums2) {
   const dp = Array.from(Array(m + 1), () => Array(n + 1).fill(0));
 
   // 遍历nums1和nums2
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
+  for (let i = 1; i < m + 1; i++) {
+    for (let j = 1; j < n + 1; j++) {
       // 如果当前元素相等，则可以在之前的最长公共子数组基础上加1
       if (nums1[i - 1] === nums2[j - 1]) {
         dp[i][j] = dp[i - 1][j - 1] + 1;
