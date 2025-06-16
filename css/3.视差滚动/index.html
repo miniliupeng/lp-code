@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3.视差滚动</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+      background: #111;
+      overflow-x: hidden;
+    }
+    .section {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .parallax-container {
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+    }
+    .parallax-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-position: center;
+      background-size: cover;
+    }
+    .layer-bg { background-image: url('https://w.wallhaven.cc/full/pk/wallhaven-pkvw9p.jpg'); transform: scale(1.2); }
+    .layer-1 { background-image: url('https://w.wallhaven.cc/full/zy/wallhaven-zygeko.png'); background-position: 50% 100%; }
+    .layer-2 { background-image: url('https://w.wallhaven.cc/full/6d/wallhaven-6d7xwl.png'); background-position: 50% 100%; }
+    .layer-3 { background-image: url('https://w.wallhaven.cc/full/j3/wallhaven-j3m8y5.png'); background-position: 50% 100%; }
+    .layer-4 { background-image: url('https://w.wallhaven.cc/full/7p/wallhaven-7p39gy.png'); background-position: 50% 100%; }
+    .layer-text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 8vw;
+      font-weight: bold;
+      color: white;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+      text-transform: uppercase;
+    }
+    h1 {
+      font-size: 5rem;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <h1>向下滚动</h1>
+  </section>
+
+  <section class="parallax-container">
+    <div class="parallax-layer layer-bg" data-depth="0.8"></div>
+    <div class="parallax-layer layer-1" data-depth="0.6"></div>
+    <div class="parallax-layer layer-2" data-depth="0.4"></div>
+    <div class="parallax-layer layer-3" data-depth="0.2"></div>
+    <div class="parallax-layer layer-4" data-depth="-0.2"></div>
+    <div class="parallax-layer layer-text" data-depth="0.3"><h2>GSAP Parallax</h2></div>
+  </section>
+
+  <section class="section">
+    <h1>滚动结束</h1>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray('.parallax-layer').forEach(layer => {
+      const depth = parseFloat(layer.dataset.depth) || 0;
+      const movement = (depth * 100);
+
+      gsap.to(layer, {
+        yPercent: movement,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".parallax-container",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

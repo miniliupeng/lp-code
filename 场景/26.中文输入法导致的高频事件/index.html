@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>26.中文输入法导致的高频事件</title>
+</head>
+<body>
+  <input type="text" id="input">
+  <script>
+    const input = document.getElementById('input');
+    const search = () => {
+      console.log('search', input.value);
+    }
+    input.addEventListener('input', () => {
+      if (isComposition) return;
+      search();
+    });
+    let isComposition = false;
+    // 中文输入法导致的高频事件
+    input.addEventListener('compositionstart', () => {
+      isComposition = true;
+    });
+    input.addEventListener('compositionend', () => {
+      isComposition = false;
+      search();
+    });
+  </script>
+</body>
+</html>
