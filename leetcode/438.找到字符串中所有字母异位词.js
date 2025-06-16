@@ -10,7 +10,7 @@
  * @param {string} p
  * @return {number[]}
  */
-
+// dismiss
 var findAnagrams = function (s, p) {
   const res = [],
     count = Array(26).fill(0); // 结果数组和字符频率计数数组

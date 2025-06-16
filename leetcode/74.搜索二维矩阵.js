@@ -11,8 +11,6 @@
  * @return {boolean}
  */
 var searchMatrix = function (matrix, target) {
-  if (!matrix || matrix.length === 0 || matrix[0].length === 0) return false
-
   const m = matrix.length
   const n = matrix[0].length
 

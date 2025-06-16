@@ -10,6 +10,7 @@
  * @param {number} k
  * @return {number[]}
  */
+// dismiss
 var maxSlidingWindow = function(nums, k) {
     const deque = [];
     const result = []

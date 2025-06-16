@@ -17,9 +17,7 @@ var numIslands = function (grid) {
   // DFS函数，用于探索与当前陆地相连的所有陆地
   function dfs(i, j) {
     // 如果坐标越界或者当前位置不是陆地，直接返回
-    if (i < 0 || i >= rows || j < 0 || j >= cols || grid[i][j] !== '1') {
-      return;
-    }
+    if (i < 0 || i >= rows || j < 0 || j >= cols || grid[i][j] !== '1') return;
 
     // 将当前位置标记为已访问（避免重复访问）
     grid[i][j] = '2';
