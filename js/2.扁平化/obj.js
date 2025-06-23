@@ -1,29 +1,24 @@
-function flattenObject(obj, prefix = '') {
-  let result = {};
-
-  for (let key in obj) {
-    const value = obj[key];
-    const newKey = prefix ? `${prefix}.${key}` : key;
-
-    if (typeof value === 'object' && value !== null) {
-      // 处理数组
-      if (Array.isArray(value)) {
-        value.forEach((item, index) => {
-          if (typeof item === 'object' && item !== null) {
-            Object.assign(result, flattenObject(item, `${newKey}[${index}]`));
-          } else {
-            result[`${newKey}[${index}]`] = item;
-          }
-        });
-      } else {
-        // 处理对象
-        Object.assign(result, flattenObject(value, newKey));
+function flattenObject(obj) {
+  const result = {};
+  
+  function flatten(obj, prefix = '') {
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const value = obj[key];
+        const newKey = prefix ? 
+          (Array.isArray(obj) ? `${prefix}[${key}]` : `${prefix}.${key}`) : 
+          key;
+        
+        if (typeof value === 'object' && value !== null) {
+          flatten(value, newKey);
+        } else {
+          result[newKey] = value;
+        }
       }
-    } else {
-      result[newKey] = value;
     }
   }
-
+  
+  flatten(obj);
   return result;
 }
 
