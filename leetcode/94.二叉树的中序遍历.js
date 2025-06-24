@@ -18,7 +18,6 @@
  * @return {number[]}
  */
 var inorderTraversal = function(root) {
-    // 解法一：递归方法
     const result = [];
     
     const inorder = (node) => {
@@ -34,31 +33,15 @@ var inorderTraversal = function(root) {
     
     inorder(root);
     return result;
-    
-    // 解法二：迭代方法（使用栈）
-    /* 
-    const result = [];
-    const stack = [];
-    let current = root;
-    
-    while (current || stack.length > 0) {
-        // 将所有左子节点入栈
-        while (current) {
-            stack.push(current);
-            current = current.left;
-        }
-        
-        // 弹出栈顶节点并访问
-        current = stack.pop();
-        result.push(current.val);
-        
-        // 处理右子节点
-        current = current.right;
-    }
-    
-    return result;
-    */
 };
 // @lc code=end
 
-// 且时间复杂度都是O(n)，空间复杂度也都是O(h)，其中h为树的高度
+// 时间复杂度是O(n)，空间复杂度也是O(h)，其中h为树的高度
+
+// 深度优先遍历（DFS）：
+// 先序遍历 Preorder  根节点 -> 左子树 -> 右子树
+// 中序遍历 Inorder 左子树 -> 根节点 -> 右子树
+// 后序遍历 Postorder 左子树 -> 右子树 -> 根节点
+
+// 广度优先遍历（BFS）：
+// 层序遍历 Level Order  按照层级从上到下，每层从左到右
