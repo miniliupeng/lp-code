@@ -22,9 +22,8 @@ var flatten = function (root) {
   const list = [];
   // 执行前序遍历，将所有节点按顺序存入数组
   preorderTraversal(root, list);
-  const size = list.length;
   // 遍历数组，将每个节点与下一个节点连接
-  for (let i = 1; i < size; i++) {
+  for (let i = 1; i < list.length; i++) {
     const prev = list[i - 1],
       curr = list[i];
     // 将前一个节点的左子节点置为null
