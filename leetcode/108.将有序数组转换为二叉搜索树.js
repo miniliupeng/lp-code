@@ -18,8 +18,6 @@
  * @return {TreeNode}
  */
 var sortedArrayToBST = function (nums) {
-  if (nums.length === 0) return null;
-
   // 选择中间元素作为根节点
   const mid = Math.floor(nums.length / 2);
   const root = new TreeNode(nums[mid]);
