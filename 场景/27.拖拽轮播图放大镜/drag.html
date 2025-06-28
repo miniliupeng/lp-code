@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>拖拽案例</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f5f5f5;
+      font-family: Arial, sans-serif;
+    }
+    .drag-container {
+      width: 600px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .drag-item {
+      width: 150px;
+      height: 150px;
+      background-color: #3498db;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      cursor: move;
+      user-select: none;
+      position: relative;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    .drag-item.dragging {
+      opacity: 0.8;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+    .instructions {
+      margin-bottom: 20px;
+      padding: 10px;
+      background-color: #eaf7ff;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="drag-container">
+    <div class="instructions">
+      点击并拖动蓝色方块。拖动过程中，方块会跟随鼠标移动。
+    </div>
+    <div class="drag-item" id="draggable">拖动我</div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const draggable = document.getElementById('draggable');
+      let isDragging = false;
+      let offsetX, offsetY;
+
+      // 鼠标按下事件
+      draggable.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        draggable.classList.add('dragging');
+        
+        // 计算鼠标点击位置与元素边界的偏移量
+        const rect = draggable.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+      });
+
+      // 鼠标移动事件
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        
+        // 设置元素的新位置
+        const x = e.clientX - offsetX;
+        const y = e.clientY - offsetY;
+        
+        draggable.style.position = 'absolute';
+        draggable.style.left = `${x}px`;
+        draggable.style.top = `${y}px`;
+      });
+
+      // 鼠标释放事件
+      document.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          draggable.classList.remove('dragging');
+        }
+      });
+
+      // 鼠标离开浏览器窗口
+      document.addEventListener('mouseleave', () => {
+        if (isDragging) {
+          isDragging = false;
+          draggable.classList.remove('dragging');
+        }
+      });
+
+      // 触摸事件支持
+      draggable.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0];
+        isDragging = true;
+        draggable.classList.add('dragging');
+        
+        const rect = draggable.getBoundingClientRect();
+        offsetX = touch.clientX - rect.left;
+        offsetY = touch.clientY - rect.top;
+        
+        e.preventDefault(); // 防止滚动
+      });
+
+      document.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        
+        const touch = e.touches[0];
+        const x = touch.clientX - offsetX;
+        const y = touch.clientY - offsetY;
+        
+        draggable.style.position = 'absolute';
+        draggable.style.left = `${x}px`;
+        draggable.style.top = `${y}px`;
+        
+        e.preventDefault(); // 防止滚动
+      });
+
+      document.addEventListener('touchend', () => {
+        if (isDragging) {
+          isDragging = false;
+          draggable.classList.remove('dragging');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

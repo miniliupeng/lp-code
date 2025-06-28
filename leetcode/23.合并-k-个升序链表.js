@@ -17,6 +17,7 @@
  * @return {ListNode}
  */
 
+// dismiss
 var mergeKLists = function (lists) {
   if (!lists || lists.length === 0) return null;
 

@@ -17,6 +17,8 @@
  * @param {number} k
  * @return {ListNode}
  */
+
+// dismiss
 var reverseKGroup = function (head, k) {
   // 1. 先看看是否有k个节点
   let check = head;

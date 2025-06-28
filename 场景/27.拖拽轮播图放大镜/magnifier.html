@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>放大镜效果</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .magnifier-container {
+            position: relative;
+        }
+
+        .small-box {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            border: 1px solid #ccc;
+        }
+
+        .small-box img {
+            width: 100%;
+            height: 100%;
+            vertical-align: top;
+        }
+
+        .mask {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200px; /* 小盒子的一半 */
+            height: 200px; /* 小盒子的一半 */
+            background-color: rgba(255, 255, 0, 0.4);
+            cursor: move;
+        }
+
+        .large-box {
+            display: none;
+            position: absolute;
+            left: 410px; /* 小盒子的宽度 + 间隙 */
+            top: 0;
+            width: 400px;
+            height: 400px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        .large-box img {
+            position: absolute;
+            width: 800px;  /* 小图的两倍 */
+            height: 800px; /* 小图的两倍 */
+        }
+    </style>
+</head>
+<body>
+
+<div class="magnifier-container">
+    <div class="small-box">
+        <img src="../4.瀑布流/img/1.webp" alt="product">
+        <div class="mask"></div>
+    </div>
+    <div class="large-box">
+        <img src="../4.瀑布流/img/1.webp" alt="product-large">
+    </div>
+</div>
+
+<script>
+    const smallBox = document.querySelector('.small-box');
+    const mask = document.querySelector('.mask');
+    const largeBox = document.querySelector('.large-box');
+    const largeImg = document.querySelector('.large-box img');
+
+    smallBox.addEventListener('mouseenter', () => {
+        mask.style.display = 'block';
+        largeBox.style.display = 'block';
+    });
+
+    smallBox.addEventListener('mouseleave', () => {
+        mask.style.display = 'none';
+        largeBox.style.display = 'none';
+    });
+
+    smallBox.addEventListener('mousemove', (e) => {
+        // 1. 计算遮罩层的位置
+        const rect = smallBox.getBoundingClientRect();
+        // 计算鼠标在 small-box 内部的坐标
+        let x = e.clientX - rect.left;
+        let y = e.clientY - rect.top;
+
+        // 鼠标应该在遮罩层的中心
+        let maskX = x - mask.offsetWidth / 2;
+        let maskY = y - mask.offsetHeight / 2;
+
+        // 2. 限制遮罩层的移动范围
+        if (maskX < 0) {
+            maskX = 0;
+        }
+        if (maskX > smallBox.offsetWidth - mask.offsetWidth) {
+            maskX = smallBox.offsetWidth - mask.offsetWidth;
+        }
+        if (maskY < 0) {
+            maskY = 0;
+        }
+        if (maskY > smallBox.offsetHeight - mask.offsetHeight) {
+            maskY = smallBox.offsetHeight - mask.offsetHeight;
+        }
+
+        mask.style.left = maskX + 'px';
+        mask.style.top = maskY + 'px';
+
+        // 3. 计算大图的位置
+        // 移动比例 = (大图尺寸 - 大盒子尺寸) / (小盒子尺寸 - 遮罩层尺寸)
+        const scaleX = (largeImg.offsetWidth - largeBox.offsetWidth) / (smallBox.offsetWidth - mask.offsetWidth);
+        const scaleY = (largeImg.offsetHeight - largeBox.offsetHeight) / (smallBox.offsetHeight - mask.offsetHeight);
+
+        // 大图的移动方向与遮罩层相反
+        let largeImgX = -maskX * scaleX;
+        let largeImgY = -maskY * scaleY;
+
+        largeImg.style.left = largeImgX + 'px';
+        largeImg.style.top = largeImgY + 'px';
+    });
+</script>
+
+</body>
+</html>
