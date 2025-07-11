@@ -1,0 +1,153 @@
+.table-container {
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 表头样式 */
+.table-header {
+  display: flex;
+  background-color: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.table-header-cell {
+  padding: 12px 8px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-right: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+}
+
+.table-header-cell:last-child {
+  border-right: none;
+}
+
+.required-icon {
+  margin-left: 4px;
+  color: #ff4d4f;
+  font-size: 14px;
+}
+
+/* 表格主体样式 */
+.table-grid {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.table-cell-wrapper {
+  border-bottom: 1px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  background-color: #fff;
+}
+
+.loading-cell {
+  opacity: 0.7;
+  background-color: #f9f9f9;
+}
+
+.table-cell {
+  width: 100%;
+  height: 32px;
+  box-sizing: border-box;
+}
+
+.table-cell-readonly {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  color: rgba(0, 0, 0, 0.65);
+  user-select: text;
+}
+
+.empty-value {
+  color: rgba(0, 0, 0, 0.25);
+  font-style: italic;
+}
+
+/* 表格底部样式 */
+.table-footer {
+  padding: 12px;
+  background-color: #fff;
+}
+
+/* 表格数据统计 */
+.table-summary {
+  padding: 8px 12px;
+  background-color: #fafafa;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 12px;
+  text-align: right;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* Ant Design 输入框样式优化 */
+.table-cell.ant-input {
+  border: none;
+  border-radius: 0;
+}
+
+.table-cell.ant-input:focus, 
+.table-cell.ant-input-focused {
+  box-shadow: none;
+  border: none;
+  outline: 1px solid #1890ff;
+}
+
+.table-cell.ant-select {
+  border: none;
+}
+
+.table-cell.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+  border-color: transparent;
+}
+
+.table-cell.ant-select-focused .ant-select-selector,
+.table-cell.ant-select-open .ant-select-selector {
+  border-color: transparent !important;
+  box-shadow: none !important;
+  outline: 1px solid #1890ff;
+}
+
+.table-cell.ant-select .ant-select-selector {
+  border: none;
+  box-shadow: none;
+  height: 32px;
+  padding: 0 11px;
+}
+
+/* 表格交互样式 */
+.table-cell-wrapper:hover {
+  background-color: #fafafa;
+}
+
+/* 错误状态样式 */
+.table-cell.ant-input-status-error:focus {
+  outline: 1px solid #ff4d4f;
+}
+
+/* 按钮交互优化 */
+.table-footer .ant-btn {
+  transition: all 0.3s;
+}
+
+.table-footer .ant-btn:hover {
+  background-color: #f0f7ff;
+  border-color: #1890ff;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .table-header-cell,
+  .table-cell-wrapper {
+    padding: 0 4px;
+  }
+} 
