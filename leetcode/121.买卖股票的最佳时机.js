@@ -10,9 +10,6 @@
  * @return {number}
  */
 var maxProfit = function (prices) {
-  if (!prices || prices.length < 2) {
-    return 0;
-  }
 
   let minPrice = prices[0];
   let maxProfit = 0;
