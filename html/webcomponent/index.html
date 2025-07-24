@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Web Components 在线案例</title>
+    <style>
+      /* --- 1. 全局样式 --- */
+      /* 这个 h3 样式不会影响到 Web Component 内部的 h3 */
+      h3 {
+        color: purple;
+        font-family: 'Georgia', serif;
+      }
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>这是主文档中的 H3 标题</h3>
+
+    <!-- --- 4. 使用我们创建的自定义元素 --- -->
+    <user-profile-card name="爱丽丝" avatar="https://www.w3schools.com/howto/img_avatar2.png">
+      <!-- 下面这部分内容将会被插入到组件的 <slot> 中 -->
+      <div slot="description">这是通过 Slot 传入的个人简介。一名前端工程师，对 Web Components 充满热情。</div>
+    </user-profile-card>
+
+    <user-profile-card name="鲍勃" avatar="https://www.w3schools.com/w3images/avatar2.png">
+      <div slot="description">我是鲍勃，这是我的简介。</div>
+    </user-profile-card>
+
+    <!-- --- 2. 使用 <template> 定义组件的 HTML 结构和内部样式 --- -->
+    <template id="user-profile-template">
+      <style>
+        /* 这是 Shadow DOM 内部的样式，它被完全封装 */
+        /* 它不会影响外部，外部样式也不会影响它 */
+        .card {
+          display: flex;
+          align-items: center;
+          width: 400px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          padding: 16px;
+          margin-top: 15px;
+          background-color: white;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .avatar {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          margin-right: 16px;
+        }
+        /* 组件内部的 h3 样式 */
+        h3 {
+          margin: 0;
+          color: #333; /* 注意：这个颜色和全局 h3 的紫色不同 */
+        }
+        .description {
+          font-size: 14px;
+          color: #666;
+        }
+      </style>
+      <div class="card">
+        <img class="avatar" src="" alt="User Avatar" />
+        <div>
+          <h3 id="name"></h3>
+          <!-- <slot> 是一个占位符，外部内容将被插入到这里 -->
+          <div class="description">
+            <slot name="description"></slot>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <script>
+      // --- 3. 使用 class 定义 Custom Element 的行为 ---
+      class UserProfileCard extends HTMLElement {
+        constructor() {
+          super(); // 必须首先调用 super()
+
+          // a. 创建一个 Shadow Root (模式为 'open'，允许外部 JS 访问)
+          // 这是实现封装的关键一步
+          this.attachShadow({ mode: 'open' });
+
+          // b. 获取 template 的内容
+          const template = document.getElementById('user-profile-template');
+          const templateContent = template.content.cloneNode(true);
+
+          // c. 将 template 的内容附加到 Shadow Root 中
+          this.shadowRoot.appendChild(templateContent);
+
+          // d. 将数据绑定到 Shadow DOM 内部的元素
+          this.shadowRoot.querySelector('#name').innerText = this.getAttribute('name');
+          this.shadowRoot.querySelector('.avatar').src = this.getAttribute('avatar');
+        }
+      }
+
+      // --- 将我们的类注册为一个新的 HTML 标签 ---
+      customElements.define('user-profile-card', UserProfileCard);
+    </script>
+  </body>
+</html>
