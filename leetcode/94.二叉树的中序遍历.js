@@ -45,3 +45,48 @@ var inorderTraversal = function(root) {
 
 // 广度优先遍历（BFS）：
 // 层序遍历 Level Order  按照层级从上到下，每层从左到右
+
+// =================== 代码示例 ===================
+
+/**
+ * 先序遍历 (根 -> 左 -> 右)
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+const preorderTraversal = (root) => {
+    const result = [];
+    const preorder = (node) => {
+        if (!node) return;
+        result.push(node.val); // 根节点
+        preorder(node.left);   // 左子树
+        preorder(node.right);  // 右子树
+    };
+    preorder(root);
+    return result;
+};
+
+/**
+ * 中序遍历 (左 -> 根 -> 右)
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+// (已在上方 LeetCode 代码中实现)
+// var inorderTraversal = function(root) { ... };
+
+
+/**
+ * 后序遍历 (左 -> 右 -> 根)
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+const postorderTraversal = (root) => {
+    const result = [];
+    const postorder = (node) => {
+        if (!node) return;
+        postorder(node.left);  // 左子树
+        postorder(node.right); // 右子树
+        result.push(node.val); // 根节点
+    };
+    postorder(root);
+    return result;
+};
