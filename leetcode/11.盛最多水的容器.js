@@ -17,8 +17,7 @@ var maxArea = function (height) {
   while (left < right) {
     // 计算当前面积
     const width = right - left;
-    const currentArea = width * Math.min(height[left], height[right]);
-    maxWater = Math.max(maxWater, currentArea);
+    maxWater = Math.max(maxWater, width * Math.min(height[left], height[right]))
 
     // 移动较短的那根柱子的指针
     if (height[left] < height[right]) {

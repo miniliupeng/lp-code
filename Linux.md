@@ -41,6 +41,20 @@ Linux 命令是与操作系统交互的基础。下面是一些开发者最常�
 *   **`touch`**: 创建一个空文件或更新已有文件的时间戳。
     *   `touch new_file.log`
 
+*   **`tar` (tape archive)**: 用于归档和压缩文件。它通常与 `gzip` 或 `bzip2` 结合使用。
+    *   `-c`: (create) 创建一个新的归档文件。
+    *   `-x`: (extract) 从归档文件中提取文件。
+    *   `-t`: (list) 列出归档文件的内容。
+    *   `-v`: (verbose) 显示详细的处理信息。
+    *   `-f`: 指定归档文件的名称。此参数是必需的。
+    *   `-z`: (gzip) 使用 gzip 进行压缩/解压缩，通常用于 `.tar.gz` 或 `.tgz` 文件。
+    *   `-C`: 指定解压到的目录。
+    *   **常用组合**:
+        *   压缩目录: `tar -czvf archive.tar.gz ./my_dir`
+        *   解压文件: `tar -xzvf archive.tar.gz`
+        *   解压到指定目录: `tar -xzvf archive.tar.gz -C /target/path`
+        *   查看归档内容: `tar -tvf archive.tar.gz`
+
 #### 2. 文件内容查看与处理
 
 *   **`cat` (concatenate)**: 查看文件全部内容。适合小文件。
