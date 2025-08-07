@@ -24,7 +24,7 @@ var lengthOfLongestSubstring = function (s) {
     set.add(s[right]);
 
     // 更新最大长度
-    maxLength = Math.max(maxLength, right - left + 1);
+    maxLength = Math.max(maxLength, /* right - left + 1 */set.size);
   }
   return maxLength;
 };
