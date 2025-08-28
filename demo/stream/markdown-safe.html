@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown 安全版本示例</title>
+  <!-- Marked.js - Markdown解析器 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@9.1.2/marked.min.js"></script>
+  <!-- DOMPurify - XSS防护 -->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
+  <!-- Highlight.js - 代码高亮 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css">
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+</head>
+<body>
+  <h1>Markdown 安全版本 (XSS防护)</h1>
+  <div id="result"></div>
+  <a href="/">返回首页</a>
+
+  <script>
+    const resultDiv = document.getElementById('result');
+    let markdownBuffer = '';
+
+    // 配置marked选项 - 禁用HTML
+    marked.setOptions({
+      // marked <= 7.0.5配置生效
+      // highlight: function(code, lang) {
+      //   console.log(code,lang);
+        
+      //   if (lang && hljs.getLanguage(lang)) {
+      //     try {
+      //       return hljs.highlight(code, { language: lang }).value;
+      //     } catch (err) {}
+      //   }
+      //   return hljs.highlightAuto(code).value;
+      // },
+      breaks: true,
+      gfm: true,
+      sanitize: true,  // 启用HTML过滤
+      smartypants: false
+    });
+
+    async function startMarkdownStream() {
+      console.log("正在连接服务器 (安全版本 Markdown 流式渲染)。");
+      resultDiv.innerHTML = '';
+      
+      try {
+        const response = await fetch('/markdown-stream');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP 错误! 状态: ${response.status}`);
+        }
+        
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        
+        while (true) {
+          const { done, value } = await reader.read();
+          
+          if (done) {
+            console.log("安全版本 Markdown流式传输完成");
+            break;
+          }
+          
+          const chunk = decoder.decode(value, { stream: true });
+          buffer += chunk;
+          
+          const lines = buffer.split('\n');
+          buffer = lines.pop();
+          
+          for (const line of lines) {
+            if (line.trim()) {
+              try {
+                const data = JSON.parse(line);
+                
+                if (data.done) {
+                  console.log("服务器已发送结束信号 (安全版本)。");
+                  return;
+                } else if (data.chunk) {
+                  markdownBuffer += data.chunk;
+                  renderMarkdownSafely();
+                }
+              } catch (e) {
+                console.warn('解析JSON失败:', line, e);
+              }
+            }
+          }
+        }
+        
+      } catch (error) {
+        console.error("安全版本 Markdown流式传输错误:", error);
+        const errorDiv = document.createElement('div');
+        errorDiv.style.color = 'red';
+        errorDiv.textContent = '\n与服务器连接断开';
+        resultDiv.appendChild(errorDiv);
+      }
+    }
+
+    function renderMarkdownSafely() {
+      try {
+        // 1. 渲染markdown为HTML
+        const htmlContent = marked.parse(markdownBuffer);
+        
+        // 2. 使用DOMPurify清理XSS
+        const cleanHTML = DOMPurify.sanitize(htmlContent, {
+          FORBID_TAGS: ['script', 'iframe', 'object', 'embed'],
+          FORBID_ATTR: ['onerror', 'onload', 'onclick', 'onmouseover', 'onfocus', 'onblur'],
+          ALLOW_DATA_ATTR: false
+        });
+        
+        // 3. 安全地插入到DOM
+        resultDiv.innerHTML = cleanHTML;
+        
+        // 4. 高亮代码块
+        resultDiv.querySelectorAll('pre code').forEach((block) => {
+          hljs.highlightElement(block);
+        });
+        
+        console.log('安全版本 Markdown渲染成功');
+      } catch (error) {
+        console.error('安全版本 Markdown渲染错误:', error);
+      }
+    }
+
+    // 页面加载后自动开始
+    window.addEventListener('load', () => {
+      if (typeof marked !== 'undefined' && typeof DOMPurify !== 'undefined') {
+        console.log('安全库已加载');
+        startMarkdownStream();
+      } else {
+        setTimeout(startMarkdownStream, 200);
+      }
+    });
+  </script>
+</body>
+</html>

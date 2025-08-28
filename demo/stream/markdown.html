@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown 流式渲染示例</title>
+  <!-- Marked.js - Markdown解析器 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@9.1.2/marked.min.js"></script>
+  <!-- Highlight.js - 代码高亮 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css">
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+</head>
+<body>
+  <h1>Markdown 流式渲染数据</h1>
+  <div id="result"></div>
+  <a href="/">返回首页</a>
+
+  <script>
+    const resultDiv = document.getElementById('result');
+    let markdownBuffer = '';
+
+    // 配置marked选项
+    marked.setOptions({
+      // highlight: function(code, lang) {
+      //   if (lang && hljs.getLanguage(lang)) {
+      //     try {
+      //       return hljs.highlight(code, { language: lang }).value;
+      //     } catch (err) {}
+      //   }
+      //   return hljs.highlightAuto(code).value;
+      // },
+      breaks: true,
+      gfm: true
+    });
+
+    async function startMarkdownStream() {
+      console.log("正在连接服务器 (Markdown 流式渲染)。");
+      resultDiv.innerHTML = '';
+      
+      try {
+        const response = await fetch('/markdown-stream');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP 错误! 状态: ${response.status}`);
+        }
+        
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        
+        while (true) {
+          const { done, value } = await reader.read();
+          
+          if (done) {
+            console.log("Markdown流式传输完成");
+            break;
+          }
+          
+          const chunk = decoder.decode(value, { stream: true });
+          buffer += chunk;
+          
+          const lines = buffer.split('\n');
+          buffer = lines.pop();
+          
+          for (const line of lines) {
+            if (line.trim()) {
+              try {
+                const data = JSON.parse(line);
+                
+                if (data.done) {
+                  console.log("服务器已发送结束信号 (Markdown)。");
+                  return;
+                } else if (data.chunk) {
+                  markdownBuffer += data.chunk;
+                  renderMarkdown();
+                }
+              } catch (e) {
+                console.warn('解析JSON失败:', line, e);
+              }
+            }
+          }
+        }
+        
+      } catch (error) {
+        console.error("Markdown流式传输错误:", error);
+        const errorDiv = document.createElement('div');
+        errorDiv.style.color = 'red';
+        errorDiv.textContent = '\n与服务器连接断开';
+        resultDiv.appendChild(errorDiv);
+      }
+    }
+
+    function renderMarkdown() {
+      try {
+        // 渲染markdown为HTML
+        const htmlContent = marked.parse(markdownBuffer);
+        resultDiv.innerHTML = htmlContent;
+        
+        // 高亮所有代码块
+        resultDiv.querySelectorAll('pre code').forEach((block) => {
+          hljs.highlightElement(block);
+        });
+      } catch (error) {
+        console.error('Markdown渲染错误:', error);
+      }
+    }
+
+    // 页面加载后自动开始
+    window.addEventListener('load', () => {
+      // 确保marked和hljs已加载
+      if (typeof marked !== 'undefined' && typeof hljs !== 'undefined') {
+        startMarkdownStream();
+      } else {
+        setTimeout(startMarkdownStream, 100);
+      }
+    });
+  </script>
+</body>
+</html>

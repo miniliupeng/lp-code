@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSE 流式传输示例</title>
+</head>
+<body>
+  <h1>Server-Sent Events 流式数据</h1>
+  <div id="result"></div>
+  <a href="/">返回首页</a>
+
+  <script>
+    const resultDiv = document.getElementById('result');
+    const eventSource = new EventSource('/stream');
+    let currentParagraph = null;
+
+    function createNewParagraph() {
+        currentParagraph = document.createElement('p');
+        resultDiv.appendChild(currentParagraph);
+    }
+
+    eventSource.onopen = function() {
+        console.log("与服务器的连接已打开 (SSE)。");
+        resultDiv.innerHTML = ''; 
+        createNewParagraph();
+    };
+
+    eventSource.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      if (data.char) {
+        if (!currentParagraph) {
+            createNewParagraph();
+        }
+        currentParagraph.textContent += data.char;
+      }
+    };
+
+    eventSource.addEventListener('end', function(event) {
+        console.log("服务器已发送结束信号，关闭连接 (SSE)。");
+        eventSource.close();
+    });
+
+    eventSource.onerror = function(err) {
+      console.error("EventSource 失败:", err);
+      if (currentParagraph) {
+          const errorSpan = document.createElement('span');
+          errorSpan.style.color = 'red';
+          errorSpan.textContent = '\\n与服务器连接断开';
+          currentParagraph.appendChild(errorSpan);
+      }
+      eventSource.close();
+    };
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "stream-demo",
+  "version": "1.0.0",
+  "description": "Node.js + Express streaming example",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js --watch"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
