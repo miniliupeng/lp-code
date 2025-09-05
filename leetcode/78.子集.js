@@ -12,12 +12,11 @@
 var subsets = function(nums) {
     const res = [];
     const path = [];
-    const len = nums.length;
 
     function backtrack(start) {
         res.push([...path]);
 
-        for (let i = start; i < len; i++) {
+        for (let i = start; i < nums.length; i++) {
             path.push(nums[i]);
             backtrack(i + 1);
             path.pop();

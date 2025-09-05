@@ -40,19 +40,19 @@ var orangesRotting = function (grid) {
     let size = queue.length;
 
     // 处理当前层的所有腐烂橘子
-    for (let i = 0; i < size; i++) {
-      let [x, y] = queue.shift();
+    for (let k = 0; k < size; k++) {
+      let [i, j] = queue.shift();
 
       // 检查四个方向
-      for (let [dx, dy] of dirs) {
-        let nx = x + dx;
-        let ny = y + dy;
+      for (let [di, dj] of dirs) {
+        let ni = i + di;
+        let nj = j + dj;
 
         // 如果是新鲜橘子，让它腐烂
-        if (nx >= 0 && nx < m && ny >= 0 && ny < n && grid[nx][ny] === 1) {
-          grid[nx][ny] = 2;
+        if (ni >= 0 && ni < m && nj >= 0 && nj < n && grid[ni][nj] === 1) {
+          grid[ni][nj] = 2;
           fresh--;
-          queue.push([nx, ny]);
+          queue.push([ni, nj]);
         }
       }
     }
