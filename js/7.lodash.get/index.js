@@ -48,6 +48,5 @@ console.log(get(object, 'a.b.c'));           // 3
 console.log(get(object, ['a', 'b', 'c']));   // 3
 console.log(get(object, 'a.b.d', 'default')); // 'default'
 console.log(get(object, 'arr[0].id'));       // 1
-console.log(get(object, 'a["x.y"]'));        // 5
 console.log(get(object, 'x.y.z', null));     // null
 console.log(get(null, 'a.b.c', 'default'));  // 'default'

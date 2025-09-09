@@ -129,3 +129,44 @@ eventBus.publish('userAction', '点击按钮');
 // 输出:
 // 处理器1收到动作： 点击按钮
 // 处理器2收到动作： 点击按钮
+
+
+
+
+
+class EventEmitter2 {
+  constructor() {
+    this.events = new Map()
+  }
+
+  on(eventName, callback) {
+    if (!this.events.has(eventName)) {
+      this.events.set(eventName, [])
+    }
+    this.events.get(eventName).push(callback)
+  }
+  
+  emit(eventName, ...args) {
+    if (!this.events.has(eventName)) return;
+    this.events.get(eventName).forEach(callback => {
+      callback(...args)
+    })
+  }
+
+  off(eventName, callback) {
+    if (!this.events.has(eventName)) return;
+    this.events.get(eventName) = this.events.get(eventName).filter(cb => cb !== callback)
+  }
+
+  once(eventName, callback) {
+    const fn = (...args) => {
+      callback(...args)
+      this.off(eventName, fn)
+    }
+    this.on(eventName, fn)
+  }
+
+  clear(eventName) {
+    this.events.delete(eventName)
+  }
+}
