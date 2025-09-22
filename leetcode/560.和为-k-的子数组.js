@@ -40,3 +40,5 @@ var subarraySum = function (nums, k) {
 // 时间复杂度：O(n)
 // 空间复杂度：O(n)
 // @lc code=end
+
+// 前缀和的妙用：如果两个位置的前缀和差值为k，那么它们之间的子数组和就是k
