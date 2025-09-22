@@ -32,13 +32,13 @@
       }
       .left {
         position: relative;
-        left: -100%;
-        margin-left: -200px;
+        left: -100%; /* 这里的 100% 是相对于其父容器 .page 的宽度。这一行代码将 .left 元素向左移动了整个 .page 的宽度。效果就是把它从第二行提到了第一行，并且其左边缘与 .content 的左边缘对齐，覆盖在了 .content 的上方。 */
+        margin-left: -200px; /* 左移200px */
       }
       .right {
         position: relative;
-        right: -200px;
-        margin-left: -200px;
+        margin-left: -200px; /* 这个负 margin 把 .right 元素向左拉了 200px（也就是它自身的宽度）。这使得 .right 的右边缘和 .content 的右边缘对齐 */
+        right: -200px; /* 右移200px */
       }
     </style>
   </head>
