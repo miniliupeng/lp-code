@@ -1,4 +1,4 @@
-# 12-浏览器存储方案：Cookie、LocalStorage、IndexedDB
+# 17-浏览器存储方案：Cookie、LocalStorage、IndexedDB
 
 除了 HTTP 缓存，浏览器还提供了多种机制，允许网页在客户端（用户的浏览器）存储和访问数据。这些技术对于实现状态保持、个性化设置、离线应用等功能至关重要。
 

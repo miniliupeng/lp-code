@@ -29,10 +29,21 @@ Service Worker 的生命周期是其最重要也最复杂的概念之一，它�
         ```
     *   `register()` 方法会返回一个 Promise，并且**每次页面加载时都会执行**。浏览器会智能地判断 SW 脚本文件是否有变化，只有在文件内容发生改变时，才会触发后续的安装和激活流程。
 
-2.  **安装 (Install)**
+2.  **安装 (Install) 与 Cache API**
     *   注册成功后，浏览器会下载并解析 SW 脚本，触发其内部的 `install` 事件。
     *   `install` 事件只会在 SW **首次注册**或**脚本文件更新**时触发一次。
-    *   这是进行**静态资源缓存**的最佳时机。我们可以使用 **Cache API** 将应用的外壳（App Shell）——如 HTML, CSS, JS, 图片等——缓存起来。
+    *   这是进行**静态资源缓存**的最佳时机。这里使用的核心技术就是 **Cache API**。
+
+    *   **深入 Cache API**:
+        *   **独立性**: Cache API 是一个**独立的、可用于主线程和 Worker 的 Web API**。它提供了一个由开发者完全控制的、持久化的 Request/Response 对象存储机制。它不是 HTTP 缓存，而是 Service Worker 实现复杂缓存策略的“弹药库”。
+        *   **核心方法**:
+            *   `caches.open(cacheName)`: 打开一个指定名称的缓存，如果不存在则创建。返回一个 Promise，resolve 为 cache 对象。
+            *   `cache.add(url)` / `cache.addAll(urls)`: 发起网络请求获取资源，并将响应对象存入缓存。这是一个原子操作，如果请求失败或响应不是 2xx，整个操作会失败。
+            *   `cache.put(request, response)`: 将一个请求和对应的响应键值对直接存入缓存。更灵活，可以存储非 GET 请求的缓存或自定义的响应。
+            *   `caches.match(request)`: 在所有缓存中查找与该请求匹配的第一个响应。
+            *   `caches.delete(cacheName)`: 删除指定名称的缓存。
+            *   `cache.keys()`: 获取缓存中所有的请求对象。
+
     *   在 `install` 事件中，可以通过 `event.waitUntil()` 方法来延长事件的生命周期，直到传入的 Promise 完成。这可以确保在 SW 安装完成之前，所有核心资源都已被成功缓存。
     *   ```javascript
         // sw.js
